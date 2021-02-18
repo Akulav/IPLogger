@@ -37,6 +37,9 @@ namespace Petru
             this.history = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.speedChange = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.speedChange)).BeginInit();
             this.SuspendLayout();
             // 
             // ip
@@ -53,7 +56,7 @@ namespace Petru
             // start
             // 
             this.start.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.start.Location = new System.Drawing.Point(9, 105);
+            this.start.Location = new System.Drawing.Point(9, 156);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(470, 36);
             this.start.TabIndex = 1;
@@ -75,7 +78,7 @@ namespace Petru
             // stop
             // 
             this.stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stop.Location = new System.Drawing.Point(9, 105);
+            this.stop.Location = new System.Drawing.Point(9, 156);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(470, 36);
             this.stop.TabIndex = 5;
@@ -86,9 +89,9 @@ namespace Petru
             // history
             // 
             this.history.FormattingEnabled = true;
-            this.history.Location = new System.Drawing.Point(9, 147);
+            this.history.Location = new System.Drawing.Point(9, 208);
             this.history.Name = "history";
-            this.history.Size = new System.Drawing.Size(470, 342);
+            this.history.Size = new System.Drawing.Size(470, 316);
             this.history.TabIndex = 6;
             // 
             // label1
@@ -111,11 +114,37 @@ namespace Petru
             this.label2.TabIndex = 8;
             this.label2.Text = "Old IP:";
             // 
+            // speedChange
+            // 
+            this.speedChange.LargeChange = 1000;
+            this.speedChange.Location = new System.Drawing.Point(131, 105);
+            this.speedChange.Maximum = 10000;
+            this.speedChange.Minimum = 1000;
+            this.speedChange.Name = "speedChange";
+            this.speedChange.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.speedChange.Size = new System.Drawing.Size(348, 45);
+            this.speedChange.SmallChange = 100;
+            this.speedChange.TabIndex = 9;
+            this.speedChange.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.speedChange.Value = 6000;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 117);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(113, 20);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Check Speed: ";
+            // 
             // DefaultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 504);
+            this.ClientSize = new System.Drawing.Size(491, 536);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.speedChange);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.history);
@@ -128,6 +157,7 @@ namespace Petru
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DefaultForm";
             this.Text = "IP DETECTOR";
+            ((System.ComponentModel.ISupportInitialize)(this.speedChange)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,6 +172,8 @@ namespace Petru
         private System.Windows.Forms.ListBox history;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar speedChange;
+        private System.Windows.Forms.Label label3;
     }
 }
 

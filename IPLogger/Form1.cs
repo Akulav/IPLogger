@@ -7,13 +7,15 @@ namespace Petru
 {
     public partial class DefaultForm : Form
     {
-        public string buffer = GetIPAddress();
+        private string buffer = GetIPAddress();
         private Timer eventLoop;
+
         public DefaultForm()
         {     
             InitializeComponent();
             stop.Visible = false;
             string root = @"C:\IP";
+
             if (!Directory.Exists(root))
             {
                 Directory.CreateDirectory(root);
@@ -21,9 +23,9 @@ namespace Petru
 
             TextWriter tsw = new StreamWriter(@"C:\IP\IP.txt", true);
             tsw.WriteLine(buffer + " - " + DateTime.Now.ToString("T") + "\n");
-            history.Items.Add(buffer + " - " + DateTime.Now.ToString("T"));
             tsw.Close();
 
+            history.Items.Add(buffer + " - " + DateTime.Now.ToString("T"));
         }
 
         private void start_Click(object sender, EventArgs e)
@@ -31,6 +33,13 @@ namespace Petru
             start.Visible = false;
             stop.Visible = true;
             InitTimer();
+        }
+
+        private void stop_Click(object sender, EventArgs e)
+        {
+            eventLoop.Stop();
+            stop.Visible = false;
+            start.Visible = true;
         }
 
         static string GetIPAddress()
@@ -59,7 +68,7 @@ namespace Petru
         {
             eventLoop = new Timer();
             eventLoop.Tick += new EventHandler(eventLoop_Tick);
-            eventLoop.Interval = 4000; // in miliseconds
+            eventLoop.Interval = 6000; // in miliseconds
             eventLoop.Start();
         }
 
@@ -67,6 +76,9 @@ namespace Petru
         {
             string data = GetIPAddress();
             string time = DateTime.Now.ToString("T");
+            int speed = speedChange.Value;
+
+            eventLoop.Interval = speed;
 
             if (data == buffer) { ip.Text = data; goto END; }
             if (data == "ERROR") { goto END; }
@@ -82,13 +94,5 @@ namespace Petru
 
         END:;
         }
-
-        private void stop_Click(object sender, EventArgs e)
-        {
-            eventLoop.Stop();
-            stop.Visible = false;
-            start.Visible = true;
-        }
-
     }
 }
