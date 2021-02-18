@@ -94,5 +94,23 @@ namespace Petru
 
         END:;
         }
+
+        private void DefaultForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.ShowInTaskbar = false;
+                notifyIcon.Visible = true;
+                this.Hide();
+            }
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+            this.Show();
+        }
     }
 }

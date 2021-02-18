@@ -29,6 +29,7 @@ namespace Petru
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DefaultForm));
             this.ip = new System.Windows.Forms.Label();
             this.start = new System.Windows.Forms.Button();
@@ -39,6 +40,7 @@ namespace Petru
             this.label2 = new System.Windows.Forms.Label();
             this.speedChange = new System.Windows.Forms.TrackBar();
             this.label3 = new System.Windows.Forms.Label();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.speedChange)).BeginInit();
             this.SuspendLayout();
             // 
@@ -138,6 +140,11 @@ namespace Petru
             this.label3.TabIndex = 10;
             this.label3.Text = "Check Speed: ";
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
             // DefaultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,6 +164,7 @@ namespace Petru
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DefaultForm";
             this.Text = "IP DETECTOR";
+            this.Resize += new System.EventHandler(this.DefaultForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.speedChange)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -174,6 +182,7 @@ namespace Petru
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar speedChange;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 
