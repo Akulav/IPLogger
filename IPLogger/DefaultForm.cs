@@ -12,8 +12,12 @@ namespace IPLogger
         private int tickrate = 7000;
 
         public DefaultForm()
-        {     
+        {
+            //make sure its double buffered
+            DoubleBuffered = true;
+
             InitializeComponent();
+            //hide button when initialized
             stopButton.Visible = false;
 
             //Write initial IP to desktop
@@ -42,7 +46,7 @@ namespace IPLogger
             //stop eventloop
             eventLoop.Stop();
         }
-
+        
         //Gets the current ip as string
         static string GetIPAddress()
         {
@@ -118,5 +122,6 @@ namespace IPLogger
             notifyIcon.Visible = false;
             this.Show();
         }
+
     }
 }
