@@ -3,45 +3,47 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 
-namespace Petru
+namespace IPLogger
 {
     public partial class DefaultForm : Form
     {
         private string buffer = GetIPAddress();
         private Timer eventLoop;
+        private int tickrate = 7000;
 
         public DefaultForm()
         {     
             InitializeComponent();
-            stop.Visible = false;
-            string root = @"C:\IP";
+            stopButton.Visible = false;
 
-            if (!Directory.Exists(root))
-            {
-                Directory.CreateDirectory(root);
-            }
-
-            TextWriter tsw = new StreamWriter(@"C:\IP\IP.txt", true);
+            //Write initial IP to desktop
+            TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ "\\" + "ip.txt", true);
             tsw.WriteLine(buffer + " - " + DateTime.Now.ToString("T") + "\n");
             tsw.Close();
-
-            history.Items.Add(buffer + " - " + DateTime.Now.ToString("T"));
+            
+            //Write initial IP to log in-app
+            historyLog.Items.Add(buffer + " - " + DateTime.Now.ToString("T"));
         }
 
         private void start_Click(object sender, EventArgs e)
         {
-            start.Visible = false;
-            stop.Visible = true;
+            //swap start with stop button
+            startButton.Visible = false;
+            stopButton.Visible = true;
+            //activate eventloop
             InitTimer();
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
+            //swap stop with start button
+            stopButton.Visible = false;
+            startButton.Visible = true;
+            //stop eventloop
             eventLoop.Stop();
-            stop.Visible = false;
-            start.Visible = true;
         }
 
+        //Gets the current ip as string
         static string GetIPAddress()
         {
             String address = "";
@@ -64,37 +66,40 @@ namespace Petru
             catch { return "ERROR"; }
         }
 
+        //starts the eventloop
         public void InitTimer()
         {
             eventLoop = new Timer();
             eventLoop.Tick += new EventHandler(eventLoop_Tick);
-            eventLoop.Interval = 6000; // in miliseconds
+            eventLoop.Interval = tickrate; // in miliseconds
             eventLoop.Start();
         }
 
+        //checks the ip and stores the old one. Uses the set speed as tick-rate
         private void eventLoop_Tick(object sender, EventArgs e)
         {
             string data = GetIPAddress();
             string time = DateTime.Now.ToString("T");
-            int speed = speedChange.Value;
+            tickrate = speedChange.Value;
 
-            eventLoop.Interval = speed;
+            eventLoop.Interval = tickrate;
 
-            if (data == buffer) { ip.Text = data; goto END; }
+            if (data == buffer) { newIP.Text = data; goto END; }
             if (data == "ERROR") { goto END; }
 
-            ip.Text = data;
+            newIP.Text = data;
             oldIP.Text = buffer;
             buffer = data;
 
-            TextWriter tsw = new StreamWriter(@"C:\IP\IP.txt", true);
+            TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "ip.txt", true);
             tsw.WriteLine(data + " - " + time + "\n");
             tsw.Close();
-            history.Items.Add(data + " - " + time);
+            historyLog.Items.Add(data + " - " + time);
 
         END:;
         }
 
+        //minimize event
         private void DefaultForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -105,6 +110,7 @@ namespace Petru
             }
         }
 
+        //double click on system tray will launch the app to taskbar
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Normal;
