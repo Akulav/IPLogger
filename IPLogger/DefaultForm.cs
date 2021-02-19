@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IpData;
+using System;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
@@ -21,10 +22,14 @@ namespace IPLogger
             stopButton.Visible = false;
 
             //Write initial IP to desktop
+            newIP.Text = buffer;
             TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ "\\" + "ip.txt", true);
             tsw.WriteLine(buffer + " - " + DateTime.Now.ToString("T") + "\n");
             tsw.Close();
-            
+
+            //
+            setFraudDetails(buffer);
+
             //Write initial IP to log in-app
             historyLog.Items.Add(buffer + " - " + DateTime.Now.ToString("T"));
         }
@@ -35,7 +40,7 @@ namespace IPLogger
             startButton.Visible = false;
             stopButton.Visible = true;
             //activate eventloop
-            InitTimer();
+            InitTimer(); 
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -70,6 +75,31 @@ namespace IPLogger
             catch { return "ERROR"; }
         }
 
+        static string[] FraudScoreAsync(string ip)
+        {
+            var client = new IpDataClient("YOUR_API_KEY");
+
+            var timezone = client.TimeZone(ip);
+            var threat = client.Threat(ip);
+
+            string[] result = { timezone.Result.Name.ToString(), threat.Result.IsProxy.ToString(), threat.Result.IsTor.ToString(),threat.Result.IsKnownAttacker.ToString(), threat.Result.IsKnownAbuser.ToString(), threat.Result.IsThreat.ToString(), threat.Result.IsAnonymous.ToString() };
+
+            return result;
+
+        }
+
+        private void setFraudDetails(string ip)
+        {
+            string[] details = FraudScoreAsync(ip);
+            countryLabel.Text = details[0];
+            proxyLabel.Text = details[1];
+            torLabel.Text = details[2];
+            attackerLabel.Text = details[3];
+            abuserLabel.Text = details[4];
+            threatLabel.Text = details[5];
+            anonymousLabel.Text = details[6];
+        }
+
         //starts the eventloop
         public void InitTimer()
         {
@@ -88,12 +118,13 @@ namespace IPLogger
 
             eventLoop.Interval = tickrate;
 
-            if (data == buffer) { newIP.Text = data; goto END; }
+            if (data == buffer) { newIP.Text = data;setFraudDetails(data); goto END; }
             if (data == "ERROR") { goto END; }
 
             newIP.Text = data;
             oldIP.Text = buffer;
             buffer = data;
+            setFraudDetails(data);
 
             TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "ip.txt", true);
             tsw.WriteLine(data + " - " + time + "\n");
