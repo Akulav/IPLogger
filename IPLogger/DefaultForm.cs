@@ -10,12 +10,21 @@ namespace IPLogger
     {
         private string buffer = GetIPAddress();
         private Timer eventLoop;
-        private int tickrate = 7000;
+        private int tickrate = 8000;
+        public static string key;
 
         public DefaultForm()
         {
             //make sure its double buffered
             DoubleBuffered = true;
+
+            //get API key
+            try
+            {
+                key = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "key.txt");
+            }
+
+            catch { MessageBox.Show("Please introduce your API key in the key.txt. Application will close."); this.Dispose(); }
 
             InitializeComponent();
             //hide button when initialized
@@ -23,11 +32,11 @@ namespace IPLogger
 
             //Write initial IP to desktop
             newIP.Text = buffer;
-            TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ "\\" + "ip.txt", true);
+            TextWriter tsw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "ip.txt", true);
             tsw.WriteLine(buffer + " - " + DateTime.Now.ToString("T") + "\n");
             tsw.Close();
 
-            //
+            //show fraud details
             setFraudDetails(buffer);
 
             //Write initial IP to log in-app
@@ -40,7 +49,7 @@ namespace IPLogger
             startButton.Visible = false;
             stopButton.Visible = true;
             //activate eventloop
-            InitTimer(); 
+            InitTimer();
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -51,7 +60,7 @@ namespace IPLogger
             //stop eventloop
             eventLoop.Stop();
         }
-        
+
         //Gets the current ip as string
         static string GetIPAddress()
         {
@@ -75,17 +84,20 @@ namespace IPLogger
             catch { return "ERROR"; }
         }
 
-        static string[] FraudScoreAsync(string ip)
+        public string[] FraudScoreAsync(string ip)
         {
-            var client = new IpDataClient("YOUR_API_KEY");
-
+            var client = new IpDataClient(key);
             var timezone = client.TimeZone(ip);
             var threat = client.Threat(ip);
 
-            string[] result = { timezone.Result.Name.ToString(), threat.Result.IsProxy.ToString(), threat.Result.IsTor.ToString(),threat.Result.IsKnownAttacker.ToString(), threat.Result.IsKnownAbuser.ToString(), threat.Result.IsThreat.ToString(), threat.Result.IsAnonymous.ToString() };
+            string[] result = {
+                timezone.Result.Name.ToString(), threat.Result.IsProxy.ToString(),
+                threat.Result.IsTor.ToString(),threat.Result.IsKnownAttacker.ToString(),
+                threat.Result.IsKnownAbuser.ToString(), threat.Result.IsThreat.ToString(),
+                threat.Result.IsAnonymous.ToString()
+            };
 
             return result;
-
         }
 
         private void setFraudDetails(string ip)
@@ -114,11 +126,8 @@ namespace IPLogger
         {
             string data = GetIPAddress();
             string time = DateTime.Now.ToString("T");
-            tickrate = speedChange.Value;
 
-            eventLoop.Interval = tickrate;
-
-            if (data == buffer) { newIP.Text = data;setFraudDetails(data); goto END; }
+            if (data == buffer) { newIP.Text = data; setFraudDetails(data); goto END; }
             if (data == "ERROR") { goto END; }
 
             newIP.Text = data;
@@ -148,10 +157,10 @@ namespace IPLogger
         //double click on system tray will launch the app to taskbar
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
             notifyIcon.Visible = false;
-            this.Show();
+            Show();
         }
 
     }

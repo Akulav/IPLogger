@@ -38,8 +38,6 @@ namespace IPLogger
             this.historyLog = new System.Windows.Forms.ListBox();
             this.currentIPLabel = new System.Windows.Forms.Label();
             this.oldIPLabel = new System.Windows.Forms.Label();
-            this.speedChange = new System.Windows.Forms.TrackBar();
-            this.checkSpeedLabel = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.country = new System.Windows.Forms.Label();
             this.tor = new System.Windows.Forms.Label();
@@ -55,7 +53,6 @@ namespace IPLogger
             this.threat = new System.Windows.Forms.Label();
             this.anonymousLabel = new System.Windows.Forms.Label();
             this.anonymous = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.speedChange)).BeginInit();
             this.SuspendLayout();
             // 
             // newIP
@@ -73,7 +70,7 @@ namespace IPLogger
             // startButton
             // 
             this.startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startButton.Location = new System.Drawing.Point(9, 156);
+            this.startButton.Location = new System.Drawing.Point(8, 105);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(470, 36);
             this.startButton.TabIndex = 1;
@@ -96,7 +93,7 @@ namespace IPLogger
             // stopButton
             // 
             this.stopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stopButton.Location = new System.Drawing.Point(9, 156);
+            this.stopButton.Location = new System.Drawing.Point(9, 105);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(470, 36);
             this.stopButton.TabIndex = 5;
@@ -107,9 +104,9 @@ namespace IPLogger
             // historyLog
             // 
             this.historyLog.FormattingEnabled = true;
-            this.historyLog.Location = new System.Drawing.Point(9, 195);
+            this.historyLog.Location = new System.Drawing.Point(9, 143);
             this.historyLog.Name = "historyLog";
-            this.historyLog.Size = new System.Drawing.Size(470, 186);
+            this.historyLog.Size = new System.Drawing.Size(470, 238);
             this.historyLog.TabIndex = 6;
             // 
             // currentIPLabel
@@ -130,30 +127,6 @@ namespace IPLogger
             this.oldIPLabel.Size = new System.Drawing.Size(92, 20);
             this.oldIPLabel.TabIndex = 8;
             this.oldIPLabel.Text = "Previous IP:";
-            // 
-            // speedChange
-            // 
-            this.speedChange.LargeChange = 1000;
-            this.speedChange.Location = new System.Drawing.Point(131, 105);
-            this.speedChange.Maximum = 30000;
-            this.speedChange.Minimum = 5000;
-            this.speedChange.Name = "speedChange";
-            this.speedChange.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.speedChange.Size = new System.Drawing.Size(348, 45);
-            this.speedChange.SmallChange = 100;
-            this.speedChange.TabIndex = 9;
-            this.speedChange.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.speedChange.Value = 7000;
-            // 
-            // checkSpeedLabel
-            // 
-            this.checkSpeedLabel.AutoSize = true;
-            this.checkSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkSpeedLabel.Location = new System.Drawing.Point(12, 117);
-            this.checkSpeedLabel.Name = "checkSpeedLabel";
-            this.checkSpeedLabel.Size = new System.Drawing.Size(113, 20);
-            this.checkSpeedLabel.TabIndex = 10;
-            this.checkSpeedLabel.Text = "Check Speed: ";
             // 
             // notifyIcon
             // 
@@ -309,9 +282,7 @@ namespace IPLogger
             this.Controls.Add(this.countryLabel);
             this.Controls.Add(this.proxyLabel);
             this.Controls.Add(this.country);
-            this.Controls.Add(this.checkSpeedLabel);
             this.Controls.Add(this.torLabel);
-            this.Controls.Add(this.speedChange);
             this.Controls.Add(this.tor);
             this.Controls.Add(this.oldIPLabel);
             this.Controls.Add(this.proxy);
@@ -327,7 +298,6 @@ namespace IPLogger
             this.Name = "DefaultForm";
             this.Text = "IP DETECTOR";
             this.Resize += new System.EventHandler(this.DefaultForm_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.speedChange)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,8 +312,6 @@ namespace IPLogger
         private System.Windows.Forms.ListBox historyLog;
         private System.Windows.Forms.Label currentIPLabel;
         private System.Windows.Forms.Label oldIPLabel;
-        private System.Windows.Forms.TrackBar speedChange;
-        private System.Windows.Forms.Label checkSpeedLabel;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label country;
         private System.Windows.Forms.Label tor;
